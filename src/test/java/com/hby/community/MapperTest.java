@@ -1,8 +1,10 @@
 package com.hby.community;
 
 import com.hby.community.dao.DiscussPostMapper;
+import com.hby.community.dao.LoginTicketMapper;
 import com.hby.community.dao.UserMapper;
 import com.hby.community.entity.DiscussPost;
+import com.hby.community.entity.LoginTicket;
 import com.hby.community.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +26,9 @@ public class MapperTest {
 
     @Autowired
     private DiscussPostMapper discussPostMapper;
+
+    @Autowired
+    private LoginTicketMapper loginTicketMapper;
 
     @Test
     public  void  testselectById(){
@@ -64,6 +69,26 @@ public class MapperTest {
             System.out.println(p);
 
         }
+
+    }
+    @Test
+    public void testinsertLoginTicket(){
+        LoginTicket loginTicket=new LoginTicket();
+        loginTicket.setTicket("abc");
+        loginTicket.setExpired(new Date(System.currentTimeMillis()+10*60*10));
+        loginTicket.setStatus(0);
+        loginTicket.setUserId(101);
+        loginTicketMapper.insertLoginTicket(loginTicket);
+    }
+
+    @Test
+    public void testselectByTicket(){
+        String ticket="abc";
+        LoginTicket loginTicket = loginTicketMapper.selectByTicket(ticket);
+        System.out.println(loginTicket);
+        loginTicketMapper.updateStatus(ticket,1);
+        LoginTicket loginTicket1 = loginTicketMapper.selectByTicket(ticket);
+        System.out.println(loginTicket1);
 
     }
 }
