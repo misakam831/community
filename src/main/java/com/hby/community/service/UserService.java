@@ -168,4 +168,8 @@ public class UserService implements CommunityConstant {
         return loginTicketMapper.selectByTicket(ticket);
 
     }
+
+    public int updateHander(int userId,String headUrl){
+       return userMapper.updateHeader(userId,headUrl);
+    }
 }
