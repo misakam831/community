@@ -38,8 +38,15 @@
     </insert>
 
     <select id="selectDiscussPostById" resultType="DiscussPost">
-        select <include refid="selectFields"></include>
+        select
+        <include refid="selectFields"></include>
         from discuss_post
         where id= #{id}
     </select>
+
+    <update id="updateCommentCount">
+        update discuss_post
+        set comment_count = #{CommentCount}
+        where id = #{id}
+    </update>
 </mapper>
