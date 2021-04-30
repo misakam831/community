@@ -48,6 +48,7 @@ public class UserController {
     public String getSettingPage() {
         return "/site/setting";
     }
+
     @LoginRequired
     @RequestMapping(path = "/upload", method = RequestMethod.POST)
     public String uploadHeader(MultipartFile headerImage, Model model) {
@@ -90,17 +91,35 @@ public class UserController {
         response.setContentType("image/" + suffix);
         try (
                 FileInputStream fis = new FileInputStream(fileName);
-                OutputStream os = response.getOutputStream();
+                OutputStream os = response.getOutputStream()
         ) {
             byte[] buffer = new byte[1024];
             int b = 0;
-            while ((b = fis.read(buffer))!=-1) {
+            while ((b = fis.read(buffer)) != -1) {
                 os.write(buffer, 0, b);
 
             }
         } catch (IOException e) {
             logger.error("读取图像失败" + e.getMessage());
         }
+
+    }
+
+    @RequestMapping(path = "/updatepassword", method = RequestMethod.POST)
+    public String uploadPassword(String oldPassword, String confirmPassword, String newPassword, Model model) {
+        User user = hostHolder.getUser();
+        oldPassword = CommunityUtil.md5(oldPassword + user.getSalt());
+        if (!oldPassword.equals(user.getPassword())) {
+            model.addAttribute("oldPasswordmsg", "您的初始密码不正确");
+            return "/site/setting";
+        }
+        if (!confirmPassword.equals(newPassword)) {
+            model.addAttribute("msg", "两次密码重复不正确");
+            return "/site/setting";
+        }
+        newPassword = CommunityUtil.md5(newPassword + user.getSalt());
+        userService.updatePassword(user.getId(), newPassword);
+        return "redirect:/index";
 
     }
 

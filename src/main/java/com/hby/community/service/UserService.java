@@ -7,7 +7,6 @@ import com.hby.community.entity.User;
 import com.hby.community.util.CommunityConstant;
 import com.hby.community.util.CommunityUtil;
 import com.hby.community.util.MainClient;
-import com.sun.mail.imap.protocol.ID;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -164,12 +163,17 @@ public class UserService implements CommunityConstant {
         loginTicketMapper.updateStatus(ticket,1);
     }
 
-    public LoginTicket findLoginTicket(String ticket){
+    public LoginTicket findLoginTicket(String ticket) {
         return loginTicketMapper.selectByTicket(ticket);
 
     }
 
-    public int updateHander(int userId,String headUrl){
-       return userMapper.updateHeader(userId,headUrl);
+    public int updateHander(int userId, String headUrl) {
+        return userMapper.updateHeader(userId, headUrl);
+    }
+
+    public int updatePassword(int id, String password) {
+        return userMapper.updatePassword(id, password);
+
     }
 }
