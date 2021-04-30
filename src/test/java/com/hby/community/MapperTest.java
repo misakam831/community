@@ -2,9 +2,11 @@ package com.hby.community;
 
 import com.hby.community.dao.DiscussPostMapper;
 import com.hby.community.dao.LoginTicketMapper;
+import com.hby.community.dao.MessageMapper;
 import com.hby.community.dao.UserMapper;
 import com.hby.community.entity.DiscussPost;
 import com.hby.community.entity.LoginTicket;
+import com.hby.community.entity.Message;
 import com.hby.community.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,15 +32,19 @@ public class MapperTest {
     @Autowired
     private LoginTicketMapper loginTicketMapper;
 
+    @Autowired
+    private MessageMapper messageMapper;
+
     @Test
-    public  void  testselectById(){
+    public void testselectById() {
         User user = userMapper.selectById(101);
         System.out.println(user);
-        user=userMapper.selectByName("aaa");
+        user = userMapper.selectByName("aaa");
         System.out.println(user);
     }
+
     @Test
-    public void testinsertuser(){
+    public void testinsertuser() {
         User user=new User();
         user.setUsername("test");
         user.setPassword("1111");
@@ -82,13 +88,38 @@ public class MapperTest {
     }
 
     @Test
-    public void testselectByTicket(){
-        String ticket="abc";
+    public void testselectByTicket() {
+        String ticket = "abc";
         LoginTicket loginTicket = loginTicketMapper.selectByTicket(ticket);
         System.out.println(loginTicket);
-        loginTicketMapper.updateStatus(ticket,1);
+        loginTicketMapper.updateStatus(ticket, 1);
         LoginTicket loginTicket1 = loginTicketMapper.selectByTicket(ticket);
         System.out.println(loginTicket1);
 
+    }
+
+    @Test
+    public void testselectConversations() {
+        List<Message> list = messageMapper.selectConversations(111, 0, 20);
+        //list.forEach(System.out::println);
+        list.forEach(v -> System.out.println(v));
+    }
+
+    @Test
+    public void selectConversationCount() {
+        int i = messageMapper.selectConversationCount(111);
+        System.out.println(i);
+    }
+
+    @Test
+    public void selectLetterCount() {
+        List<Message> list = messageMapper.selectLetters("111_112", 0, 20);
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    public void selectLetterUnreadCount() {
+        int i = messageMapper.selectConversationCount(111);
+        System.out.println(i);
     }
 }
