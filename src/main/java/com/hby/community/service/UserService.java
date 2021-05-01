@@ -39,23 +39,28 @@ public class UserService implements CommunityConstant {
     @Value("${server.servlet.context-path}")
     private String contextpath;
 
-    public User findUserById(int id){
+    public User findUserById(int id) {
         return userMapper.selectById(id);
     }
 
-    public Map<String,Object> register(User user){
-        Map<String,Object> map=new HashMap<>();
+    public User findUserByName(String name) {
+        return userMapper.selectByName(name);
+    }
+
+
+    public Map<String, Object> register(User user) {
+        Map<String, Object> map = new HashMap<>();
         //空值判断
-        if (user==null){
+        if (user == null) {
             throw new IllegalArgumentException("参数不能为空!");
 
         }
-        if (StringUtils.isBlank(user.getUsername())){
-            map.put("usernameMsg","帐号不能为空!");
+        if (StringUtils.isBlank(user.getUsername())) {
+            map.put("usernameMsg", "帐号不能为空!");
             return map;
         }
-        if (StringUtils.isBlank(user.getPassword())){
-            map.put("passwordMsg","密码不能为空!");
+        if (StringUtils.isBlank(user.getPassword())) {
+            map.put("passwordMsg", "密码不能为空!");
             return map;
         }
         if (StringUtils.isBlank(user.getEmail())){
@@ -174,6 +179,6 @@ public class UserService implements CommunityConstant {
 
     public int updatePassword(int id, String password) {
         return userMapper.updatePassword(id, password);
-
     }
+
 }
